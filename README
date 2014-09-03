@@ -1,0 +1,15 @@
+Zabbix-Read-Only-Filesystem-Check
+=================================
+
+# Author: Joshua Cagle
+# Organization: The University of Oregon
+
+# This script checks for filesystems that are read only. This will
+# be used in conjuction with the Zabbix monitoring and alerting system.
+# If the script returns 0 then the filesystem in read only mode.
+# This script uses a non-exhaustive case statment of potential mount paths,
+# yet they are common in our environment.
+
+# In order to use this a Zabbix configuration fragment will have to be made.
+# It should look like this:
+# UserParameter=checkro[*],/etc/zabbix/scripts/checkro.sh $1
