@@ -16,26 +16,12 @@ mountPoint=$1
 
 # Ensures that one parameter is used while using script.
 [ "$#" -eq 1 ] || { echo "usage: checkro.sh <mountPoint> "; exit 1; }
-case "$1" in
-	/)
-          	regex="^rootfs\s/\s"
-                ;;
-        /dev/mapper/VolGroup00-LogVol00)
-                regex="^/dev/mapper/VolGroup00-LogVol00\s/\s"
-                ;;
-        /boot)
-              	regex="^/dev/sda1\s/boot\s"
-                ;;
-        *)
-          	echo "Please enter a supported path."
-                exit 128
-                ;;
-esac
+
 # Checks /proc/mounts for regular expressions that match mounted filesystems.
 # Then checks to see if found string has read/write (rw) enabled. If read/write
 # is enabled then the script returns a 1, if not it returns a 0. I will create
 # an item and trigger in Zabbix to trigger on a 0.
-if cat /proc/mounts | grep ${regex}  | grep "\srw" > /dev/null
+if grep -E '^.*\s'"${mountPoint}"'\s' /proc/mounts | grep -E '\srw' > /dev/null
         then
             	echo 1
         else
